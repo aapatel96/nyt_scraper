@@ -1,4 +1,11 @@
 from nytimesarchive import ArchiveAPI
+import os
+import pymongo
+
+client = pymongo.MongoClient('mongodb://heroku_d0df7lpt:i4k9nglftvest2g14p69tkrbph@ds135534.mlab.com:35534/heroku_d0df7lpt')
+db = client.get_default_database()
+
+articles = db['articles']
 
 api = ArchiveAPI('3d07f455158e48a7867a80541a58435b')
 
@@ -16,13 +23,13 @@ def pullRelevantInfo(docs):
                   'headline':article['headline'],
                   'snippet':article['snippet']
                   }
-        if article['section_name']:
+        try:
             updated_article['section']= article['section_name']
+        except:
+            pass
+        articles.insert_one(updated_article)
         l.append(updated_article)
-        
     return l
 
 
 x = pullRelevantInfo(getResults())
-
-

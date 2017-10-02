@@ -27,7 +27,7 @@ def pullRelevantInfo(docs):
 
     return l
 
-newslists =[]
+newslists ={}
 for year in range(1997,2018):
   articles = pullRelevantInfo(getResults(year,11))
-  newslists.append(articles)
+  newslists[year]=articles
